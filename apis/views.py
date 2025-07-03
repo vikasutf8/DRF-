@@ -1,7 +1,9 @@
 
 from students.models import Student
 from employees.models import Employee
+from blogs.models import Blog, Comment
 from .serializers import StudentSerializer, EmployeeSerializer
+from blogs.serializers import BlogSerializer, CommentSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
@@ -190,3 +192,12 @@ class EmployeeViewset(viewsets.ViewSet):
 class EmployeeViewset(viewsets.ModelViewSet):
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
+
+
+class BlogsView(generics.ListCreateAPIView):
+    queryset = Blog.objects.all()
+    serializer_class = BlogSerializer
+    
+class CommentsView(generics.ListCreateAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
