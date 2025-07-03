@@ -20,4 +20,7 @@ urlpatterns = [
     path('blogs/', views.BlogsView.as_view()),
     path('comments/', views.CommentsView.as_view()),
 
+    path('blogs/<int:pk>', views.BlogDetail.as_view()),
+    path('comments/<int:pk>', views.CommentDetail.as_view()),
+
 ]
