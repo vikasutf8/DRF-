@@ -8,6 +8,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework import mixins
 from rest_framework.generics import GenericAPIView
+from rest_framework import generics
 
 # Create your views here.
 """
@@ -102,8 +103,8 @@ class EmployeeDetail(APIView):
             return Response(employeeSerializer.data, status=status.HTTP_200_OK)
         return Response(employeeSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
         """
-
-
+"""
+# MIXINS
 class EmployeeView(mixins.ListModelMixin, mixins.CreateModelMixin,  GenericAPIView):
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
@@ -128,3 +129,24 @@ class EmployeeDetail(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.
         return self.destroy(request, employee_id=employee_id)
     def patch(self, request, empployee_id):
         return self.partial_update(request, empployee_id=empployee_id)
+
+
+        """
+
+# GENERIC VIEWS
+
+# class EmployeeView(generics.ListAPIView, generics.CreateAPIView):
+#     queryset = Employee.objects.all()
+#     serializer_class = EmployeeSerializer
+#     lookup_field = 'employee_id'
+
+
+class EmployeeView(generics.ListCreateAPIView):
+    queryset = Employee.objects.all()
+    serializer_class = EmployeeSerializer
+    
+class EmployeeDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Employee.objects.all()
+    serializer_class = EmployeeSerializer
+    lookup_field = 'employee_id'
+    
