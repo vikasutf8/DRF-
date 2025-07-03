@@ -6,6 +6,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
+from rest_framework import mixins
+from rest_framework.generics import GenericAPIView
 
 # Create your views here.
 """
@@ -58,7 +60,7 @@ def studentDetail(request, student_id):
         return Response(studentSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 
-
+"""
 class EmployeeView(APIView):
     def get(self, request):
         employee = Employee.objects.all()
@@ -70,7 +72,8 @@ class EmployeeView(APIView):
             employeeSerializer.save()
             return Response(employeeSerializer.data, status=status.HTTP_201_CREATED)
         return Response(employeeSerializer.errors, status=status.HTTP_400_BAD_REQUEST) 
-
+        """
+""" 
 class EmployeeDetail(APIView):
     def get(self, request, employee_id):
         try:
@@ -84,7 +87,7 @@ class EmployeeDetail(APIView):
         employee = Employee.objects.get(employee_id=employee_id)
         employeeSerializer = EmployeeSerializer(employee, data=request.data)
         if employeeSerializer.is_valid():
-            employeeSerializer.save()
+            employeeSerializer.save()               
             return Response(employeeSerializer.data, status=status.HTTP_200_OK)
         return Response(employeeSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
     def delete(self, request, employee_id):
@@ -98,3 +101,30 @@ class EmployeeDetail(APIView):
             employeeSerializer.save()
             return Response(employeeSerializer.data, status=status.HTTP_200_OK)
         return Response(employeeSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        """
+
+
+class EmployeeView(mixins.ListModelMixin, mixins.CreateModelMixin,  GenericAPIView):
+    queryset = Employee.objects.all()
+    serializer_class = EmployeeSerializer
+
+    def get(self, request):
+        return self.list(request)
+
+    def post(self, request):
+        return self.create(request)
+
+
+class EmployeeDetail(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin, GenericAPIView):
+    queryset = Employee.objects.all()
+    serializer_class = EmployeeSerializer
+    lookup_field = 'employee_id'
+
+    def get(self,request, employee_id):
+        return self.retrieve(request, employee_id=employee_id)
+    def put(self, request, employee_id):
+        return self.update(request, employee_id = employee_id)
+    def delete(self, request, employee_id):
+        return self.destroy(request, employee_id=employee_id)
+    def patch(self, request, empployee_id):
+        return self.partial_update(request, empployee_id=empployee_id)
