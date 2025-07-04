@@ -15,6 +15,8 @@ from rest_framework import viewsets
 from .pagination import CustomPagination
 from django_filters.rest_framework import DjangoFilterBackend
 from employees.filter import EmployeeFilter
+from  rest_framework.filters import SearchFilter, OrderingFilter
+
 
 # Create your views here.
 """
@@ -202,6 +204,9 @@ class EmployeeViewset(viewsets.ModelViewSet):
 class BlogsView(generics.ListCreateAPIView):
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
+    filter_backends = [SearchFilter, OrderingFilter]
+    search_fields = ['blog_title','blog_content']
+    ordering_fields = ['id','blog_title']
     
 class CommentsView(generics.ListCreateAPIView):
     queryset = Comment.objects.all()
