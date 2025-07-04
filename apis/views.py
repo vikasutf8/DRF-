@@ -12,6 +12,7 @@ from rest_framework import mixins
 from rest_framework.generics import GenericAPIView
 from rest_framework import generics
 from rest_framework import viewsets
+from .pagination import CustomPagination
 
 # Create your views here.
 """
@@ -192,6 +193,7 @@ class EmployeeViewset(viewsets.ViewSet):
 class EmployeeViewset(viewsets.ModelViewSet):
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
+    pagination_class = CustomPagination
 
 
 class BlogsView(generics.ListCreateAPIView):
