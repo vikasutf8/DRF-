@@ -13,6 +13,8 @@ from rest_framework.generics import GenericAPIView
 from rest_framework import generics
 from rest_framework import viewsets
 from .pagination import CustomPagination
+from django_filters.rest_framework import DjangoFilterBackend
+from employees.filter import EmployeeFilter
 
 # Create your views here.
 """
@@ -194,6 +196,7 @@ class EmployeeViewset(viewsets.ModelViewSet):
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
     pagination_class = CustomPagination
+    filter_class = EmployeeFilter
 
 
 class BlogsView(generics.ListCreateAPIView):
